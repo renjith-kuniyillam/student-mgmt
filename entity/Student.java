@@ -28,7 +28,7 @@ public class Student {
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     private StudentDetail studentDetail;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "student_courses",
             joinColumns = @JoinColumn(name = "student_id"),

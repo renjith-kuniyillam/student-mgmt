@@ -1,6 +1,7 @@
 package com.school_management.school_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"students"})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +25,18 @@ public class Course {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id", nullable = false)
+    @JsonIgnore
     private Teacher teacher;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonIgnore
     private List<Student> students;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Assignment> assignments;
 
 }

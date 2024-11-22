@@ -1,5 +1,6 @@
 package com.school_management.school_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,8 @@ public class StudentDetail {
 
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
+    @JsonIgnore
     private Student student;
 }

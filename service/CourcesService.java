@@ -27,30 +27,32 @@ public class CourcesService {
 
 
          List<Course> result = courcesRepository.findAll(courseSpecification);
-
+        System.out.println(result);
         List<StudentDto> studentDtoList = result.stream()
                 .flatMap(x -> x.getStudents().stream())
                 .map(StudentMapper::toStudentDto)
                 .collect(Collectors.toList());
-
-
-
-         return studentDtoList;
+        return studentDtoList;
     }
 
     public List<StudentDto> getStudentsByNameAndCourse(String studentName, String courseName) {
-        Specification<Course> courseSpecification = Specification
-                .where(CourseSpecification.courseNameLike(courseName))
-                .and(CourseSpecification.studentNameLike(studentName));
+//        Specification<Course> courseSpecification = Specification
+//                .where(CourseSpecification.courseNameLike(courseName))
+//                .and(CourseSpecification.studentNameLike(studentName));
+        Specification<Course> courseSpecification = CourseSpecification.studentNameAndCourseNameLike(studentName, courseName);
+
+//        Specification<Course> spec = Specification
+//                .where(CourseSpecification.courseNameLike(courseName))
+//                .and(CourseSpecification.fetchStudents());
         List<Course> result = courcesRepository.findAll(courseSpecification);
         List<StudentDto> studentDtoList = result.stream()
                 .flatMap(x -> x.getStudents().stream())
-
+                .filter(student -> student.getName().contains(studentName))
                 .map(StudentMapper::toStudentDto)
                 .collect(Collectors.toList());
 
-
         return studentDtoList;
+ //       return studentDtoList;
     }
 
 
