@@ -1,6 +1,7 @@
 package com.school_management.school_management.controller;
 
 import com.school_management.school_management.service.CourcesService;
+import com.school_management.school_management.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class StudentsController {
 
     private final CourcesService courcesService;
+    private final StudentService studentService;
 
 
     @GetMapping("/byCourse/{course}")
@@ -22,5 +24,10 @@ public class StudentsController {
     @GetMapping("/byCourseAndName/{course}/{name}")
     public ResponseEntity<Object> getStudentsOfCourseAndName(@PathVariable(name="course") String courseName, @PathVariable(name="name") String studentName) {
         return ResponseEntity.ok(courcesService.getStudentsByNameAndCourse(studentName, courseName));
+    }
+
+    @GetMapping("/details/{name}")
+    public ResponseEntity<Object> getStudentDetails(@PathVariable(name="name") String studentName) {
+        return ResponseEntity.ok(studentService.getStudentDetails(studentName));
     }
 }

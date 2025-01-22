@@ -33,9 +33,10 @@ public class CourseSpecification {
         return (root, query, criteriaBuilder) -> {
             query.distinct(true); // Ensure distinct results
             var studentsJoin = root.join("students", JoinType.INNER);
+            var studentNameLowerCase = studentName.toLowerCase();
             return criteriaBuilder.or(
-                    criteriaBuilder.like(studentsJoin.get("name"), "%" + studentName + "%"),
-                    criteriaBuilder.like(root.get("name"), "%" + courseName + "%")
+                    criteriaBuilder.like(criteriaBuilder.lower(studentsJoin.get("name")), "%" + studentNameLowerCase + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + courseName.toLowerCase() + "%")
             );
         };
     }
